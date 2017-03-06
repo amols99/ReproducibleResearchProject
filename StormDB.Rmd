@@ -1,30 +1,67 @@
 ---
-title: "Storm Database"
-author: "Amol"
+title: "Analysis of the Health and Economic Consequences of Severe Weather Events"
+author: "AmolSahasrabudhe"
 date: "March 5, 2017"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+  knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Synopsis
+This document describes an the data, transformations and analysis that allows us to evaluate the economic and health impacts of extreme weather events such as storms. The data was made availabe from the NOAA website
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+### Output session info Include necessary packages upfront
+```{r message=FALSE}
+sessionInfo()
+library(dplyr)
+library(ggplot2)
 ```
 
-## Including Plots
+## Data Processing
+```{r cache=TRUE}
+stormfilelink = "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+download.file(stormfilelink, destfile = "./StormData.bz2")
+stormData<- tbl_df(read.csv(bzfile("./StormData.bz2")))
+```
+The data set has `r ncol(stormData)` variables and `r nrow(stormData)` observations and there are 985 types of Events grouped by the EVTYPE variable. 
 
-You can also embed plots, for example:
+## Analysis
+Organize and group the data by the type of consequence fatalities, injuries
+```{r}
+groupByEvents <- group_by(stormData, EVTYPE)
+aggResults <- data.frame(summarise(groupByEvents, 
+                        totalfatalities = sum(FATALITIES), 
+                        totalinjuries = sum(INJURIES), 
+                        totalpropertydamages = sum(PROPDMG)))
+top10fatalities <- head(arrange(aggResults, desc(totalfatalities)), 10)
+top10injuries <- head(arrange(aggResults, desc(totalinjuries)), 10)
+top10property <- head(arrange(aggResults, desc(totalpropertydamages)), 10)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Chart Graphs for top 10 events causing fatalities, injuries and loss of property
+
+### first plot totalfatalities by Event type
+```{r}
+g <- ggplot(data=top10fatalities, aes(x=EVTYPE, y=totalfatalities))
+g + geom_bar(stat="identity" , aes(fill=totalfatalities)) +
+  scale_fill_gradient(low="cyan",high="red") +    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+### Now plot totalInjuries by Event type
+```{r}
+g <- ggplot(data=top10injuries, aes(x=EVTYPE, y=totalinjuries))
+g + geom_bar(stat="identity" , aes(fill=totalinjuries)) +
+  scale_fill_gradient(low="yellow",high="orange") +    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+
+### Now plot totalPropertyDamages by Event type
+```{r}
+g <- ggplot(data=top10property, aes(x=EVTYPE, y=totalpropertydamages))
+g + geom_bar(stat="identity" , aes(fill=totalpropertydamages)) +
+  scale_fill_gradient(low="light blue",high="dark blue") +    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+## Results
+The results we arrive at presented below
+
