@@ -49,6 +49,10 @@ g <- ggplot(data=top10fatalities, aes(x=EVTYPE, y=totalfatalities))
 g + geom_bar(stat="identity" , aes(fill=totalfatalities)) +
   scale_fill_gradient(low="cyan",high="red") +    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
+
+
+
+
 ### Plot totalInjuries by Event type
 ```{r}
 g <- ggplot(data=top10injuries, aes(x=EVTYPE, y=totalinjuries))
@@ -62,5 +66,7 @@ g <- ggplot(data=top10property, aes(x=EVTYPE, y=totalpropertydamages))
 g + geom_bar(stat="identity" , aes(fill=totalpropertydamages)) +
   scale_fill_gradient(low="light blue",high="dark blue") +    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
+
+
 ## Results
 The charts above would suggest that Tornadoes are the number one reason for fatalities and injuries. Looking at the property damages the conclusion is the same. Tornadoes lead to the most property damage in totality across the country.
