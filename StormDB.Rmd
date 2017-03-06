@@ -12,7 +12,7 @@ output: html_document
 ## Synopsis
 This document describes an the data, transformations and analysis that allows us to evaluate the economic and health impacts of extreme weather events such as storms. The data was made availabe from the NOAA website
 
-### Output session info Include necessary packages upfront
+### Output session info &  Include necessary packages upfront
 ```{r message=FALSE}
 sessionInfo()
 library(dplyr)
@@ -41,7 +41,7 @@ top10property <- head(arrange(aggResults, desc(totalpropertydamages)), 10)
 
 ```
 
-## Chart Graphs for top 10 events causing fatalities, injuries and loss of property
+## Charts
 
 ### first plot totalfatalities by Event type
 ```{r}
@@ -49,18 +49,18 @@ g <- ggplot(data=top10fatalities, aes(x=EVTYPE, y=totalfatalities))
 g + geom_bar(stat="identity" , aes(fill=totalfatalities)) +
   scale_fill_gradient(low="cyan",high="red") +    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
-### Now plot totalInjuries by Event type
+### Plot totalInjuries by Event type
 ```{r}
 g <- ggplot(data=top10injuries, aes(x=EVTYPE, y=totalinjuries))
 g + geom_bar(stat="identity" , aes(fill=totalinjuries)) +
   scale_fill_gradient(low="yellow",high="orange") +    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
 
-### Now plot totalPropertyDamages by Event type
+### Plot totalPropertyDamages by Event type
 ```{r}
 g <- ggplot(data=top10property, aes(x=EVTYPE, y=totalpropertydamages))
 g + geom_bar(stat="identity" , aes(fill=totalpropertydamages)) +
   scale_fill_gradient(low="light blue",high="dark blue") +    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
 ## Results
-The charts above would suggest that Tornadoes are the number one reason for fatalities and injuries. Looking at the property damages the conclusions is the same. Tornadoes lead to the most property damage in totality across the country.
+The charts above would suggest that Tornadoes are the number one reason for fatalities and injuries. Looking at the property damages the conclusion is the same. Tornadoes lead to the most property damage in totality across the country.
