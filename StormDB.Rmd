@@ -63,5 +63,4 @@ g + geom_bar(stat="identity" , aes(fill=totalpropertydamages)) +
   scale_fill_gradient(low="light blue",high="dark blue") +    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
 ## Results
-The results we arrive at presented below
-
+The charts above would suggest that Tornadoes are the number one reason for fatalities and injuries. Looking at the property damages the conclusions is the same. Tornadoes lead to the most property damage in totality across the country.
